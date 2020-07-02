@@ -1,0 +1,95 @@
+\section{Object Instance Identification using Color Histograms}\label{sec:histograms}
+
+The main challenges of object identification are the different modes of variations:
+\begin{myitem}
+    \item Viewpoint changes (translation, image plane rotation, scale changes, out of plane rotation);
+    \item Illumination;
+    \item Clutter;
+    \item Occlusion;
+    \item Noise;
+\end{myitem}
+
+Until a paradigm shift in the 90s, the most used approach were \textbf{appearance-based identification}, which basic assumptions were:
+\begin{myitem}
+    \item Objects can be represented by a collection of images, called \textit{appearances};
+    \item For recognition, it is sufficient to compare the 2D appearances (no 3D model is needed).
+\end{myitem}
+
+Global representation:
+\begin{myitem}
+    \item Represent each view of an object by a global descriptor;
+    \item For recognizing objects, just match the global descriptors.
+\end{myitem}
+With this approach, we can take care of the modes of variations in three different ways:
+\begin{myitem}
+    \item built into the descriptor (the descriptor can be invariant to image-plan rotations and translations),
+    \item incorporated in the training data or the recognition process (the training set can be built with different viewpoints, scales, out-of-plane rotations),
+    \item robustness of descriptor or recognition process (the descriptor matching strategy can be robust to illumination, noise, clutter, partial occlusion).
+\end{myitem}
+
+Such an identifier might be the \textbf{color histogram}:
+\begin{myitem}
+    \item Color stays constant under geometric transformation and is robust to partial occlusion (since it is a \textit{local feature}, i.e., it's defined for each pixel);
+    \item We can use color statistics: given $(R,G,B)$ for each pixel, compute a 1D histogram for each the three values and one for the luminance, or a single 3D histogram with $H(R,G,B) = \# \text{pixel with color} (R,G,B)$ (more meaningful and with a notion of closeness);
+\end{myitem}
+
+\begin{obs}
+    One component of the 3D color space is \textbf{intensity}, given by $I = R + G + B$, thus, if a color vector is multiplied by a scalar, the intensity changes but not the color itself, this means colors can be normalized by the intensity, to obtain their \textit{chromatic representation}:\\
+    \begin{minipage}{.33\linewidth}
+        \begin{equation}\label{eq:chromatic-r}
+        r = \frac{R}{R+ G + B}
+        \end{equation}
+    \end{minipage}
+    \begin{minipage}{.33\linewidth}
+        \begin{equation}\label{eq:chromatic-g}
+        g = \frac{G}{R+ G + B}
+        \end{equation}
+    \end{minipage}
+    \begin{minipage}{.33\linewidth}
+        \begin{equation}\label{eq:chromatic-b}
+        b = \frac{B}{R+ G + B}
+        \end{equation}
+    \end{minipage}
+\end{obs}
+
+\obs Since $r + g + b = 1$, only two parameters are necessary.
+
+Recognition using histograms (\textit{nearest-neighbor} strategy):
+\begin{myenum}
+    \item Build a database with multiple training views per known objects;
+    \item Build a set of histograms $H = {M_1, M_2, M_3, \ldots}$ for each view image in the dataset;
+    \item Build a histogram $T$ for the test image (of an unknown object);
+    \item Compare $T$ to each $M_k \in H$;
+    \item Select the object with the best matching score, or reject the test image if no object is similar enough (distance above a threshold $t$).
+\end{myenum}
+
+
+\subsection{Comparison measures}\label{sec:h-measures}
+
+\begin{myitem}
+    \item \textbf{Intersection} measures the common part of both histograms (more robust): $\cap(Q,V) = \sum_i \min\left(q_i, v_i\right)$,
+    \item Intersection for unnormalized histograms: $\cap(Q,V) = \frac12 \left( \frac{\sum_i \min\left(q_i, v_i\right)}{\sum_i q_i} + \frac{\sum_i \min\left(q_i, v_i\right)}{\sum_i v_i} \right)$,
+    \item \textbf{Euclidean distance} focuses on the differences between the histograms, all cells are weighted equally (not very discriminant): $d(Q,V) = \sum_i \left( q_i - v_i \right)^2$,
+    \item \textbf{Chi-square} tests if two distributions are different, it is more significant since cells are not weighted equally, but may have problems with outliers: $\chi^2(Q,V) = \sum_i \frac{\left( q_i - v_i \right)^2}{q_i + v_i}$,
+    \item Statistical tests,
+    \item Information theoretic measures.
+\end{myitem}
+
+
+\subsection{Pro and cons}\label{sec:h-pro-cons}
+
+In the first paper in 1991 this approach worked surprisingly well, with 66 objects recognized almost without errors.
+
+Advantages:
+\begin{myitem}
+    \item invariant to object translations and rotations,
+    \item slowly changing for out-of-plane rotations or with partial occlusion,
+    \item no perfect segmentation necessary,
+    \item possible to recognize deformable objects.
+\end{myitem}
+
+Disadvantages:
+\begin{myitem}
+    \item the pixel colors change with the illumination (\textit{color constancy problem}): intensity and spectral composition,
+    \item not all objects can be identified by their color distribution.
+\end{myitem}

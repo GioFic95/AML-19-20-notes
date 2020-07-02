@@ -1,0 +1,147 @@
+\documentclass{article}
+
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{import}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{float}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+% links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linkbordercolor={0 0 1},
+    citebordercolor={0 0 1},
+    urlbordercolor={0 0 1},
+    pdfborderstyle={/S/U/W 1}
+}
+
+% listings style for pseudo-code and similiar
+\usepackage[table,xcdraw]{xcolor}
+\definecolor{backgray}{RGB}{238, 238, 238}
+\definecolor{commgray}{RGB}{124,124,124}
+\usepackage{listings}
+\lstset{ 
+    basicstyle=\linespread{1.1}\ttfamily\footnotesize,
+    frame=tlbr,
+    framesep=0.2cm,
+    framerule=0pt,
+    captionpos=b,
+    language=Delphi,
+    mathescape=true,
+    backgroundcolor=\color{backgray},
+    commentstyle=\color{commgray}
+}
+\newcommand{\code}[1]{\colorbox{backgray}{\lstinline{#1}}}
+
+% adds commands \abs and \norm (from https://tex.stackexchange.com/a/43009)
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% adds commands \armax and \argmin (from https://tex.stackexchange.com/a/5255)
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Theorems & co
+\usepackage{amsthm}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[thm]
+\newtheorem{claim}{Claim}[thm]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{defn}{Definition}[section]
+\theoremstyle{definition}
+\newtheorem{obs}{Observation}[section]
+\theoremstyle{remark}
+\newtheorem{ex}{Example}[section]
+\theoremstyle{remark}
+\newtheorem{qst}{Question}[section]
+
+% Apply colored underline or overline to math expressions
+\def\mathunderline#1#2{\color{#1}\underline{{\color{black}#2}}\color{black}}
+\def\mathoverline#1#2{\color{#1}\overline{{\color{black}#2}}\color{black}}
+
+% Nicer lists
+\usepackage{enumitem}
+\setlist{topsep=0pt}
+
+\renewcommand{\labelitemiii}{$\circ$}
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+\renewcommand{\labelenumiii}{\theenumiii}
+\renewcommand{\theenumiii}{\theenumii\arabic{enumiii}.}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.1em}
+
+\newenvironment{myitem} {
+    \vspace{-0.5em}
+    \begin{itemize}
+        \setlength{\itemsep}{0.2em}
+    } { \end{itemize} }
+
+\newenvironment{myenum} {
+    \vspace{-0.5em}
+    \begin{enumerate}
+        \setlength{\itemsep}{0.2em}
+    } { \end{enumerate} }
+
+
+\title{
+    Advanced Machine Learning \\
+    \Large La Sapienza - 2019-2020
+}
+\author{Giovanni Ficarra}
+
+
+\begin{document}
+    
+\maketitle
+
+\begin{abstract}
+    Summary of the material proposed by prof. Fabio Galasso in the course \href{https://sites.google.com/di.uniroma1.it/aml-19-20}{Adavanced Machine Learning}, held at Sapienza University of Rome in A.A. 2019/2020. Original sources and authors are indicated in the slides provided by the prof.
+    
+    These nodes are shared without any guarantee of complete correctness, since I may have done typos or misunderstood something. Feel free to drop an email at \href{mailto:giovannificarra95@gmail.com}{giovannificarra95@gmail.com} to report errors, or contribute to my \href{https://github.com/GioFic95/AML-19-20-notes}{GitHub repo}.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+\subimport{chapters/}{intro.tex}
+\newpage
+\subimport{chapters/}{img_filtering.tex}
+\newpage
+\subimport{chapters/}{histograms.tex}
+\newpage
+\subimport{chapters/}{evaluation.tex}
+\newpage
+\subimport{chapters/}{img_classification.tex}
+\newpage
+\subimport{chapters/}{deep_learning.tex}
+\newpage
+\subimport{chapters/}{cnn.tex}
+\newpage
+\subimport{chapters/}{training-nn.tex}
+\newpage
+\subimport{chapters/}{detection.tex}
+\newpage
+\subimport{chapters/}{visual_search.tex}
+\newpage
+\subimport{chapters/}{pose.tex}
+\newpage
+\subimport{chapters/}{sequence.tex}
+\newpage
+\subimport{chapters/}{multi-meta.tex}
+
+\end{document}
